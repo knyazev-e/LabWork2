@@ -15,10 +15,8 @@ TEST_OBJECT = $(TEST_SOURCE:.cpp=.o)
 
 all: $(TARGET_PROJECT) $(TARGET_TEST)
 
-
 $(TARGET_PROJECT): $(PROJECT_OBJECT)
 	$(CXX) -o $@ $^
-
 
 $(TARGET_TEST): $(TEST_OBJECT)
 	$(CXX) -o $@ $^ $(LDFLAGS)
