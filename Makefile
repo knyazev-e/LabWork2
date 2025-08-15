@@ -1,37 +1,33 @@
-TARGET_PROJECT = main
-TARGET_TEST = test1
+
+# Compiler and flags
 CXX = g++
-CXXFLAGS = -std=c++17 -I$(GTEST_DIR)/include
-LDFLAGS = -L$(GTEST_DIR)/lib -lgtest -lgtest_main -pthread
+CXXFLAGS = -std=c++17 -Wall -Wextra -I./source -fsanitize=address -g
 
+# Source files and object files
+SRCDIR = source
+SOURCES = $(wildcard $(SRCDIR)/*.cpp)
+OBJECTS = $(SOURCES:$(SRCDIR)/%.cpp=build/%.o)
 
-PROJECT_SOURCE = $(wildcard source/*.cpp)
-TEST_SOURCE = $(wildcard tests/*.cpp)
+# Output executable
+TARGET = game
 
+# Default rule to build executable
+all: $(TARGET)
 
-PROJECT_OBJECT = $(PROJECT_SOURCE:.cpp=.o)
-TEST_OBJECT = $(TEST_SOURCE:.cpp=.o)
+# Create build directory if missing
+build:
+	mkdir -p build
 
+# Link object files to create executable
+$(TARGET): build $(OBJECTS)
+	$(CXX) $(CXXFLAGS) -o $@ $(OBJECTS)
 
-all: $(TARGET_PROJECT) $(TARGET_TEST)
-
-$(TARGET_PROJECT): $(PROJECT_OBJECT)
-	$(CXX) -o $@ $^
-
-$(TARGET_TEST): $(TEST_OBJECT)
-	$(CXX) -o $@ $^ $(LDFLAGS)
-
-
-%.o: %.cpp
+# Compile source files into object files
+build/%.o: $(SRCDIR)/%.cpp | build
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
-
+# Clean build files
 clean:
-	rm -f $(PROJECT_OBJECT) $(TEST_OBJECT) $(TARGET_PROJECT) $(TARGET_TEST)
+	rm -rf build $(TARGET)
 
-
-test: $(TARGET_TEST)
-	./$(TARGET_TEST)
-
-
-.PHONY: all clean test
+.PHONY: all clean build
