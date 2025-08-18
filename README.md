@@ -10,5 +10,13 @@ A turn-based battle RPG game in C++.
 st128104@student.spbu.ru
 
 ## Build
+make
 
 ## Run
+./game
+
+## Run Tests
+./unit_tests
+
+## Clean
+make clean
