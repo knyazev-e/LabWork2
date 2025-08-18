@@ -8,11 +8,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v4
-    - name: Depend
+    - name: dependencies
       run: sudo apt-get install -y build-essential libgtest-dev
     - name: make
       run: make
     - name: chmod
-      run: chmod +x ./test1
-    - name: run test
-      run: ./test1
+      run: chmod +x ./unit_tests
+    - name: run unit tests
+      run: ./unit_tests
+    - name: clean
+      run: make clean

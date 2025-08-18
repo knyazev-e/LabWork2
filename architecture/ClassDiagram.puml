@@ -1,0 +1,149 @@
+@startuml
+
+left to right direction
+
+' Core Character hierarchy
+class Character {
+    - name: std::string
+    - class_id: int
+    - health: int
+    - mana: int
+    - attack_power: int
+    - defence: int
+    - healing_rate: int
+    - weapon: std::shared_ptr<Weapon>
+    - armour: std::shared_ptr<Armour>
+    + Character(name, cid, hp, mana, atk, def, hr)
+    + virtual ~Character()
+    + getName(): std::string
+    + setName(name: std::string)
+    + getHealth(): int
+    + setHealth(h: int)
+    + getMana(): int
+    + setMana(m: int)
+    + getCid(): int
+    + setArmour(a: std::shared_ptr<Armour>)
+    + getArmour(): std::shared_ptr<Armour>
+    + setWeapon(w: std::shared_ptr<Weapon>)
+    + getWeapon(): std::shared_ptr<Weapon>
+}
+
+class Player {
+    - class_items: std::vector<std::shared_ptr<Item>>
+    - class_actions: std::vector<std::shared_ptr<Action>>
+    - item: std::shared_ptr<Item>
+    - description: std::string
+    + clone(): std::shared_ptr<Player>
+    + setItem(i: std::shared_ptr<Item>)
+    + getItem(): std::shared_ptr<Item>
+}
+
+class Wizard {
+    - intelligence: int
+    + setIntelligence(int)
+    + getIntelligence(): int
+    + clone(): std::shared_ptr<Player>
+}
+
+class Knight {
+    - crit_chance: double
+    + setCritChance(double)
+    + getCritChance(): double
+    + clone(): std::shared_ptr<Player>
+}
+
+class Druid {
+    - healing_bonus: int
+    + setHealingBonus(int)
+    + getHealingBonus(): int
+    + clone(): std::shared_ptr<Player>
+}
+
+class Bard {
+    - luck: double
+    + setLuck(double)
+    + getLuck(): double
+    + clone(): std::shared_ptr<Player>
+}
+
+class Enemy {
+    - crit_chance: double
+    - equipping_flag: int
+    - next_action: std::shared_ptr<Action>
+    + setNextAction(act: std::shared_ptr<Action>)
+    + getNextAction(): std::shared_ptr<Action>
+}
+
+' Inheritance
+Player -|> Character
+Wizard -|> Player
+Knight -|> Player
+Druid -|> Player
+Bard -|> Player
+Enemy -|> Character
+
+
+' Action hierarchy (simplified)
+class Action {
+    - name: std::string
+    - description: std::string
+    - mana_usage: int
+    + execute(...)
+}
+
+class StatModifyingAction {
+    - modified_stat: int
+    - quantity: int
+    + execute(...)
+}
+
+class Spell {
+    + execute(...)
+}
+
+class Equip {
+    + execute(...)
+}
+
+class Dodge {
+    + attempt(...)
+}
+
+class Distract {
+    + execute(...)
+}
+
+StatModifyingAction -|> Action
+Spell -|> Action
+Equip -|> Action
+Dodge -|> Action
+Distract -|> Action
+
+' Item hierarchy
+class Item {
+    - name: std::string
+    - description: std::string
+    - durability: int
+    - type: int
+    - health_bonus: int
+    - defence_bonus: int
+    - mana_bonus: int
+    - attack_bonus: int
+    - luck_bonus: double
+    - hb_bonus: int
+    - crit_chance_bonus: double
+    - int_bonus: int
+}
+
+class Armour {
+    - weight: int
+}
+
+class Weapon {
+    - level: int
+}
+
+Armour -|> Item
+Weapon -|> Item
+
+@enduml
