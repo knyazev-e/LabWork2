@@ -1,3 +1,7 @@
+/* Kniazeva Eva Andreevna
+st128104@student.spbu.ru
+labwork2: rpg game */
+
 #ifndef STATMODIFYINGACTION_H
 #define STATMODIFYINGACTION_H
 

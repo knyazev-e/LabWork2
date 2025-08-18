@@ -1,3 +1,7 @@
+/* Kniazeva Eva Andreevna
+st128104@student.spbu.ru
+labwork2: rpg game */
+
 #include "Game.h"
 
 Game::Game() : battle(), player(std::make_shared<Player>()), enemy(), statistics(), state(0), difficulty(1), is_running(false) {}

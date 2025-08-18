@@ -1,3 +1,7 @@
+/* Kniazeva Eva Andreevna
+st128104@student.spbu.ru
+labwork2: rpg game */
+
 #ifndef WIZARD_H
 #define WIZARD_H
 

@@ -1,3 +1,7 @@
+/* Kniazeva Eva Andreevna
+st128104@student.spbu.ru
+labwork2: rpg game */
+
 #include "Player.h"
 
 Player::Player() : Character("Player", 0, player_init_hp, player_init_mana, player_init_attack, player_init_defence, player_healing_rate), item(nullptr), description(default_desc) {}

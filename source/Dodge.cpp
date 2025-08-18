@@ -1,3 +1,7 @@
+/* Kniazeva Eva Andreevna
+st128104@student.spbu.ru
+labwork2: rpg game */
+
 #include "Dodge.h"
 
 Dodge::Dodge(const std::string& name, const std::string& desc, int mana) : Action(name, desc, mana) {}
