@@ -1,37 +1,40 @@
-TARGET_PROJECT = main
-TARGET_TEST = test1
 CXX = g++
-CXXFLAGS = -std=c++17 -I$(GTEST_DIR)/include
-LDFLAGS = -L$(GTEST_DIR)/lib -lgtest -lgtest_main -pthread
+CXXFLAGS = -std=c++17 -Wall -Wextra -I./source -I/usr/include/gtest -g
+LINKFLAGS = -lgtest -lgtest_main -pthread
 
+SRCDIR = source
+TESTDIR = tests
 
-PROJECT_SOURCE = $(wildcard source/*.cpp)
-TEST_SOURCE = $(wildcard tests/*.cpp)
+MAIN_OBJ = build/main.o
+SOURCES = $(filter-out $(SRCDIR)/main.cpp, $(wildcard $(SRCDIR)/*.cpp))
+OBJECTS = $(SOURCES:$(SRCDIR)/%.cpp=build/%.o)
 
+TESTSOURCES = $(wildcard $(TESTDIR)/*.cpp)
+TESTOBJECTS = $(TESTSOURCES:$(TESTDIR)/%.cpp=build/tests_%.o)
 
-PROJECT_OBJECT = $(PROJECT_SOURCE:.cpp=.o)
-TEST_OBJECT = $(TEST_SOURCE:.cpp=.o)
+TARGET = game
+TESTTARGET = unit_tests
 
+all: $(TARGET) $(TESTTARGET)
+build:
+	mkdir -p build
 
-all: $(TARGET_PROJECT) $(TARGET_TEST)
+$(TARGET): build $(MAIN_OBJ) $(OBJECTS)
+	$(CXX) $(CXXFLAGS) -o $@ $(MAIN_OBJ) $(OBJECTS)
 
-$(TARGET_PROJECT): $(PROJECT_OBJECT)
-	$(CXX) -o $@ $^
-
-$(TARGET_TEST): $(TEST_OBJECT)
-	$(CXX) -o $@ $^ $(LDFLAGS)
-
-
-%.o: %.cpp
+build/%.o: $(SRCDIR)/%.cpp | build
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
+build/main.o: $(SRCDIR)/main.cpp | build
+	$(CXX) $(CXXFLAGS) -c $< -o $@
+
+$(TESTTARGET): build $(TESTOBJECTS) $(OBJECTS)
+	$(CXX) $(CXXFLAGS) -o $@ $(TESTOBJECTS) $(OBJECTS) $(LINKFLAGS)
+
+build/tests_%.o: $(TESTDIR)/%.cpp | build
+	$(CXX) $(CXXFLAGS) -c $< -o $@
 
 clean:
-	rm -f $(PROJECT_OBJECT) $(TEST_OBJECT) $(TARGET_PROJECT) $(TARGET_TEST)
+	rm -rf build $(TARGET) $(TESTTARGET)
 
-
-test: $(TARGET_TEST)
-	./$(TARGET_TEST)
-
-
-.PHONY: all clean test
+.PHONY: all clean build
