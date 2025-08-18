@@ -1,0 +1,38 @@
+@startuml
+package "Core System" {
+  component Game
+  component Battle
+  component "Enemy AI" as EnemyAI
+  component Statistics
+
+  Game --> Battle : invokes
+  Game --> EnemyAI : uses
+  Game --> Statistics : records
+}
+
+package Characters {
+  component Character
+  component Player
+  component Enemy
+
+  Player --> Character : inherits
+  Enemy --> Character : inherits
+}
+
+package Actions {
+  component "General Actions"
+  component "Class-specific Actions"
+}
+
+package Items {
+  component "General Items"
+  component "Class-specific Items"
+}
+
+Game --> Characters : contains
+Characters --> Items : equips
+Player --> Actions : chooses
+EnemyAI --> Actions : chooses
+
+
+@enduml
